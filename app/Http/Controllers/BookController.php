@@ -31,8 +31,9 @@ class BookController extends Controller
     public function create()
     {
         $authors = DB::table('authors')->get(['id', 'name']);
+        $categories = DB::table('categories')->get(['id', 'name']);
         $publishers = DB::table('publishers')->get(['id', 'name']);
-        return view('pages.add_book', compact('authors', 'publishers'));
+        return view('pages.add_book', compact('authors', 'categories', 'publishers'));
     }
 
     /**
@@ -45,19 +46,20 @@ class BookController extends Controller
     {
         $validatedData = $request->validate([
             'author_id' => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
             'publisher_id' => ['required', 'numeric'],
-            'sampul' => ['required', 'url'],
-            'judul' => ['required'],
-            'deskripsi' => ['required', 'min:10'],
-            'tahun_terbit' => ['required', 'numeric']
+            'cover' => ['required', 'url'],
+            'title' => ['required'],
+            'description' => ['required', 'min:10'],
+            'publication_year' => ['required', 'numeric']
         ]);
 
         if ($validatedData) {
-            $validatedData['slug'] = Str::slug($request->judul, '-');
+            $validatedData['slug'] = Str::slug($request->cover, '-');
 
             Book::create($validatedData);
 
-            return back()->with('msg', 'Buku berhasil ditambahkan');
+            return back()->with('msg', 'Book added successfully');
         }
 
         return back();

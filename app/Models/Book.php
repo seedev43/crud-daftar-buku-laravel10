@@ -11,7 +11,18 @@ class Book extends Model
 
     protected $table = 'list_books';
 
-    protected $fillable = ['author_id', 'category_id', 'publisher_id', 'sampul', 'judul', 'slug', 'deskripsi', 'tahun_terbit'];
+    // list column fillable
+    protected $fillable = [
+        'author_id',
+        'category_id',
+        'publisher_id',
+        'publication_year_id',
+        'cover',
+        'title',
+        'slug',
+        'description'
+    ];
+
 
     public function author()
     {
@@ -26,5 +37,10 @@ class Book extends Model
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
+    }
+
+    public function publication_year()
+    {
+        return $this->belongsTo(PublicYear::class);
     }
 }

@@ -18,11 +18,11 @@ return new class extends Migration
             $table->foreignId('author_id');
             $table->foreignId('category_id');
             $table->foreignId('publisher_id');
-            $table->string('sampul');
-            $table->string('judul');
+            $table->foreignId('publication_year_id');
+            $table->string('cover');
+            $table->string('title');
             $table->string('slug');
-            $table->text('deskripsi');
-            $table->string('tahun_terbit');
+            $table->text('description');
             $table->timestamps();
         });
     }
