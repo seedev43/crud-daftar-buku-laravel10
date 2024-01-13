@@ -35,21 +35,16 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <!-- <div class="card mb-3" style="max-width: 540px;"> -->
                                 <div class="row">
-                                    <!-- <div class="col-md-1"> -->
                                     <div class="col-lg-2">
                                         <img src="{{ $book->cover }}" class="rounded me-2"
                                             style="width: 150px; height: 220px; object-fit: center;" alt="zpedia">
 
                                     </div>
-                                    <!-- </div> -->
                                     <div class="col-lg-8 mt-2">
-
-                                        <!-- <div class="card-body"> -->
-                                        <h5 class="card-title">
+                                        <h3>
                                             {{ $book->title }}
-                                        </h5>
+                                        </h3>
                                         <p class="card-text"><small class="text-muted"><b>Category : </b>
                                                 {{ $book->category->name }}</small></p>
                                         <p class="card-text" style="text-align: justify;">

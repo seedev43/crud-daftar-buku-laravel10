@@ -22,7 +22,6 @@
 
 
 
-
 <!-- JAVASCRIPT -->
 <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -30,11 +29,42 @@
 <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
 
-<!-- apexcharts -->
-<script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<!-- CKEDITOR -->
+<script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description');
+</script>
 
-<!-- dashboard init -->
-<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
+<!-- Sweet Alert 2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
+
+
+<script>
+    let delForm = document.getElementById('deleteForm')
+    delForm.addEventListener('click', function(e) {
+        // e.preventDefault()
+        console.log("OKE");
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    })
+</script>
 
 <!-- Required datatable js -->
 <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -49,6 +79,9 @@
 
 <!-- Datatable init js -->
 <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
+
+<!-- dashboard init -->
+<script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 
 <!-- App js -->
 <script src="{{ asset('assets/js/app.js') }}"></script>

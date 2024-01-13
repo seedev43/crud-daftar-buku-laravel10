@@ -16,6 +16,13 @@
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
 
+    <!-- Responsive datatable examples -->
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
+        rel="stylesheet" type="text/css" />
+
+    <!-- Sweet Alert 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.min.css" rel="stylesheet">
+
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -144,7 +151,8 @@
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">James Lemire</h6>
                                             <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified English.
+                                                <p class="mb-1" key="t-simplified">It will seem like simplified
+                                                    English.
                                                 </p>
                                                 <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span
                                                         key="t-hours-ago">1 hours ago</span></p>
@@ -178,7 +186,8 @@
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">Salena Layfield</h6>
                                             <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend of
+                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
+                                                    of
                                                     mine occidental.</p>
                                                 <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span
                                                         key="t-hours-ago">1 hours ago</span></p>
@@ -201,7 +210,8 @@
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="rounded-circle header-profile-user"
                                 src="{{ asset('assets/images/users/avv.jpg') }}" alt="Header Avatar">
-                            <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ auth()->user()->name }}</span>
+                            <span class="d-none d-xl-inline-block ms-1"
+                                key="t-henry">{{ auth()->user()->name }}</span>
                             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">

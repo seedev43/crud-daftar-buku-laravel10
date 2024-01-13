@@ -62,13 +62,8 @@
                                         <div class="pt-4">
 
                                             <div class="row">
-                                                <div class="col-6">
-                                                    <h5 class="font-size-15">
-                                                        <?= $_SERVER['REMOTE_ADDR'] ?>
-                                                    </h5>
-                                                    <p class="text-muted mb-0">Your IP</p>
-                                                </div>
-                                                <div class="col-6">
+
+                                                <div class="col-12">
                                                     <h5 class="font-size-15">
                                                         <?= date('d M Y H:i:s') ?>
                                                     </h5>
@@ -89,12 +84,12 @@
                     </div>
                     <div class="col-xl-7">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="card mini-stats-wid">
                                     <div class="card-body">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
-                                                <p class="text-muted fw-medium">Number of books</p>
+                                                <p class="text-muted fw-medium">Books</p>
                                                 <h5 class="mb-0">{{ $countBook }}</h5>
                                             </div>
 
@@ -109,8 +104,91 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="card mini-stats-wid">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1">
+                                                <p class="text-muted fw-medium">Authors</p>
+                                                <h5 class="mb-0">{{ $countAuthor }}</h5>
+                                            </div>
+                                            <div class="flex-shrink-0 align-self-center">
+                                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                    <span class="avatar-title">
+                                                        <i class="fa-regular fa-user font-size-24"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card mini-stats-wid">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1">
+                                                <p class="text-muted fw-medium">Categories</p>
+                                                <h5 class="mb-0">{{ $countCategory }}</h5>
+                                            </div>
+                                            <div class="flex-shrink-0 align-self-center">
+                                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                    <span class="avatar-title">
+                                                        <i class="fa-regular fa-list-alt font-size-24"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card mini-stats-wid">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1">
+                                                <p class="text-muted fw-medium">Publishers</p>
+                                                <h5 class="mb-0">{{ $countPublisher }}</h5>
+                                            </div>
+                                            <div class="flex-shrink-0 align-self-center">
+                                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                    <span class="avatar-title">
+                                                        <i class="fa-regular fa-newspaper font-size-24"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card mini-stats-wid">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1">
+                                                <p class="text-muted fw-medium">Publication Years</p>
+                                                <h5 class="mb-0">{{ $countPublicYear }}</h5>
+                                            </div>
+                                            <div class="flex-shrink-0 align-self-center">
+                                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                    <span class="avatar-title">
+                                                        <i class="fa-regular fa-calendar font-size-24"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
                 <!-- end row -->
 
@@ -119,8 +197,13 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-
-                                <a href="{{ route('add-book') }}" class="btn btn-primary waves-effect waves-light mb-2">Add
+                                @if (session('msg'))
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session('msg') }}
+                                    </div>
+                                @endif
+                                <a href="{{ route('add-book') }}"
+                                    class="btn btn-primary waves-effect waves-light mb-2">Add
                                     Book</a>
 
                                 <h4 class="card-title mt-2">Book List</h4>
@@ -152,10 +235,18 @@
                                                         class="btn btn-success waves-effect waves-light"><i
                                                             class="fa fa-list"></i></a>
 
-                                                    <a href="" class="btn btn-warning waves-effect waves-light"><i
+                                                    <a href="{{ route('edit-book', $book->slug) }}"
+                                                        class="btn btn-warning waves-effect waves-light"><i
                                                             class="fa fa-pencil"></i></a>
-                                                    <a onclick="" class="btn btn-danger waves-effect waves-light"><i
-                                                            class="fa fa-trash"></i></a>
+                                                    <form id="deleteForm" class="d-inline" method="post"
+                                                        action="{{ route('delete-book', $book->slug) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button"
+                                                            class="btn btn-danger waves-effect waves-light"><i
+                                                                class="fa fa-trash"></i></button>
+
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

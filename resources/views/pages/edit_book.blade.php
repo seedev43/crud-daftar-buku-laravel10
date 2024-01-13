@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Add Book')
+@section('title', 'Edit Book')
 
 @section('content')
 
@@ -16,12 +16,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Add Book</h4>
+                            <h4 class="mb-sm-0 font-size-18">Edit Book</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
-                                    <li class="breadcrumb-item active">Add Book</li>
+                                    <li class="breadcrumb-item active">Edit Book</li>
                                 </ol>
                             </div>
 
@@ -35,13 +35,15 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="post" action="{{ route('book.store') }}">
+                                <form method="post" action="{{ route('book.update', $bookData->id) }}">
                                     @csrf
+                                    @method('PUT')
                                     <div class="form-group mb-2">
                                         <label for="cover">Cover</label>
                                         <input type="text" name="cover" id="cover"
                                             class="form-control @error('cover') is-invalid @enderror"
-                                            placeholder="Ex: https://cdnwpseller.gramedia.net/wp-content/uploads/2021/10/02003757/laskar-pelangi.jpg">
+                                            placeholder="Ex: https://cdnwpseller.gramedia.net/wp-content/uploads/2021/10/02003757/laskar-pelangi.jpg"
+                                            value="{{ old('cover', $bookData->cover) }}">
                                         @error('cover')
                                             <div class="invalid-feedback mb-3">
                                                 {{ $message }}
@@ -52,7 +54,7 @@
                                         <label for="title">Book Title</label>
                                         <input type="text" name="title" id="title"
                                             class="form-control @error('title') is-invalid @enderror" placeholder=""
-                                            value="{{ old('title') }}">
+                                            value="{{ old('title', $bookData->title) }}">
                                         @error('title')
                                             <div class="invalid-feedback mb-3">
                                                 {{ $message }}
@@ -62,7 +64,7 @@
                                     <div class="form-group mb-2">
                                         <label for="description">Description</label>
                                         <textarea name="description" id="description" cols="30" rows="10"
-                                            class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                                            class="form-control @error('description') is-invalid @enderror">{{ old('description', $bookData->description) }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback mb-3">
                                                 {{ $message }}
@@ -73,8 +75,15 @@
                                         <label for="category">Category</label>
                                         <select type="select" name="category_id" id="category_id" class="form-select">
                                             <option value="">Select Category...</option>
+
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @if ($category->name == $bookData->category->name)
+                                                    <option value="{{ $bookData->category_id }}" selected>
+                                                        {{ $bookData->category->name }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -83,7 +92,13 @@
                                         <select type="select" name="author_id" id="author_id" class="form-select">
                                             <option value="">Select Author...</option>
                                             @foreach ($authors as $author)
-                                                <option value="{{ $author->id }}">{{ $author->name }}</option>
+                                                @if ($author->name == $bookData->author->name)
+                                                    <option value="{{ $bookData->author_id }}" selected>
+                                                        {{ $bookData->author->name }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $author->id }}">{{ $author->name }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -92,7 +107,13 @@
                                         <select type="select" name="publisher_id" id="publisher_id" class="form-select">
                                             <option value="">Select Publisher...</option>
                                             @foreach ($publishers as $publisher)
-                                                <option value="{{ $publisher->id }}">{{ $publisher->name }}</option>
+                                                @if ($publisher->name == $bookData->publisher->name)
+                                                    <option value="{{ $bookData->publisher_id }}" selected>
+                                                        {{ $bookData->publisher->name }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $publisher->id }}">{{ $publisher->name }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -102,8 +123,14 @@
                                             class="form-select">
                                             <option value="">Select Publication Year...</option>
                                             @foreach ($publication_years as $publication_year)
-                                                <option value="{{ $publication_year->id }}">{{ $publication_year->year }}
-                                                </option>
+                                                @if ($publication_year->year == $bookData->publication_year->year)
+                                                    <option value="{{ $bookData->publication_year_id }}" selected>
+                                                        {{ $bookData->publication_year->year }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $publication_year->id }}">
+                                                        {{ $publication_year->year }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>

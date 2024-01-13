@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Category;
+use App\Models\PublicYear;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -19,8 +23,12 @@ class BookController extends Controller
 
         $books = Book::all();
         $countBook = $books->count();
+        $countAuthor = Author::all()->count();
+        $countCategory = Category::all()->count();
+        $countPublisher = Publisher::all()->count();
+        $countPublicYear = PublicYear::all()->count();
 
-        return view('pages.index', compact('books', 'countBook'));
+        return view('pages.index', compact('books', 'countBook', 'countAuthor', 'countCategory', 'countPublisher', 'countPublicYear'));
     }
 
     /**
@@ -33,7 +41,8 @@ class BookController extends Controller
         $authors = DB::table('authors')->get(['id', 'name']);
         $categories = DB::table('categories')->get(['id', 'name']);
         $publishers = DB::table('publishers')->get(['id', 'name']);
-        return view('pages.add_book', compact('authors', 'categories', 'publishers'));
+        $publication_years = DB::table('publication_years')->get(['id', 'year']);
+        return view('pages.add_book', compact('authors', 'categories', 'publishers', 'publication_years'));
     }
 
     /**
@@ -48,18 +57,18 @@ class BookController extends Controller
             'author_id' => ['required', 'numeric'],
             'category_id' => ['required', 'numeric'],
             'publisher_id' => ['required', 'numeric'],
+            'publication_year_id' => ['required', 'numeric'],
             'cover' => ['required', 'url'],
-            'title' => ['required'],
-            'description' => ['required', 'min:10'],
-            'publication_year' => ['required', 'numeric']
+            'title' => ['required', 'unique:list_books'],
+            'description' => ['required', 'min:10']
         ]);
 
         if ($validatedData) {
-            $validatedData['slug'] = Str::slug($request->cover, '-');
+            $validatedData['slug'] = Str::slug($request->title, '-');
 
             Book::create($validatedData);
 
-            return back()->with('msg', 'Book added successfully');
+            return redirect('home')->with('msg', 'Book added successfully');
         }
 
         return back();
@@ -71,10 +80,10 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book, $slug)
+    public function show(Book $book, string $slug)
     {
         $book = $book->where('slug', $slug)->first();
-        return view('pages.detail_book', compact('book'));
+        return view('pages.book_detail', compact('book'));
     }
 
     /**
@@ -83,9 +92,14 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit(Book $book, string $slug)
     {
-        //
+        $bookData = $book->where('slug', $slug)->first();
+        $authors = DB::table('authors')->get(['id', 'name']);
+        $categories = DB::table('categories')->get(['id', 'name']);
+        $publishers = DB::table('publishers')->get(['id', 'name']);
+        $publication_years = DB::table('publication_years')->get(['id', 'year']);
+        return view('pages.edit_book', compact('bookData', 'authors', 'categories', 'publishers', 'publication_years'));
     }
 
     /**
@@ -95,9 +109,28 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $validatedData = $request->validate([
+            'author_id' => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
+            'publisher_id' => ['required', 'numeric'],
+            'publication_year_id' => ['required', 'numeric'],
+            'cover' => ['required', 'url'],
+            'title' => ['required', 'unique:list_books,title,' . $id],
+            'description' => ['required', 'min:10']
+        ]);
+
+        if ($validatedData) {
+            $validatedData['slug'] = Str::slug($request->title, '-');
+
+            $book->update($validatedData);
+
+            return redirect('home')->with('msg', 'Book data has been successfully changed');
+        }
+
+        return back();
     }
 
     /**
@@ -106,8 +139,10 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy(Book $book, $slug)
     {
-        //
+        $book->where('slug', $slug)->first()->delete();
+
+        return redirect('home')->with('msg', 'The book has been successfully deleted');
     }
 }
