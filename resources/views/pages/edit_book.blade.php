@@ -35,7 +35,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="post" action="{{ route('book.update', $bookData->id) }}">
+                                <form method="post" action="{{ route('book.update', $bookData->slug) }}">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group mb-2">

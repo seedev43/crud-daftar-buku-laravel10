@@ -10,6 +10,7 @@ use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
@@ -109,16 +110,17 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        $book = Book::findOrFail($id);
+        $book = Book::where('slug', $slug)->first();
+        // dd($book->id);
         $validatedData = $request->validate([
             'author_id' => ['required', 'numeric'],
             'category_id' => ['required', 'numeric'],
             'publisher_id' => ['required', 'numeric'],
             'publication_year_id' => ['required', 'numeric'],
             'cover' => ['required', 'url'],
-            'title' => ['required', 'unique:list_books,title,' . $id],
+            'title' => ['required', Rule::unique('list_books', 'title')->ignore($book->id)],
             'description' => ['required', 'min:10']
         ]);
 
