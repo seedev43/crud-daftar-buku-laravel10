@@ -238,14 +238,14 @@
                                                     <a href="{{ route('edit-book', $book->slug) }}"
                                                         class="btn btn-warning waves-effect waves-light"><i
                                                             class="fa fa-pencil"></i></a>
-                                                    <form id="deleteForm" class="d-inline" method="post"
+
+                                                    <form class="d-inline" method="post"
                                                         action="{{ route('delete-book', $book->slug) }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button"
-                                                            class="btn btn-danger waves-effect waves-light"><i
+                                                        <button type="submit"
+                                                            class="btn btn-danger waves-effect waves-light delete"><i
                                                                 class="fa fa-trash"></i></button>
-
                                                     </form>
                                                 </td>
                                             </tr>

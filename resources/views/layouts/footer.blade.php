@@ -38,12 +38,11 @@
 <!-- Sweet Alert 2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
 
-
+<!-- Delete Action -->
 <script>
-    let delForm = document.getElementById('deleteForm')
-    delForm.addEventListener('click', function(e) {
-        // e.preventDefault()
-        console.log("OKE");
+    $('.delete').click(function(e) {
+        var form = $(this).closest("form");
+        e.preventDefault()
 
         Swal.fire({
             title: "Are you sure?",
@@ -57,10 +56,10 @@
             if (result.isConfirmed) {
                 Swal.fire({
                     title: "Deleted!",
-                    text: "Your file has been deleted.",
+                    text: "the book has been deleted.",
                     icon: "success"
                 });
-                document.getElementById('deleteForm').submit();
+                form.submit();
             }
         });
     })
