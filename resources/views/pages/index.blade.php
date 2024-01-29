@@ -226,7 +226,8 @@
                                         @foreach ($books as $book)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td><img class="rounded me-2" width="100px" src="{{ $book->cover }}"
+                                                <td><img class="rounded me-2" width="100px"
+                                                        src="{{ asset('/storage/images/' . $book->cover) }}"
                                                         title="{{ $book->slug }}">
                                                 </td>
                                                 <td>{{ $book->title }}</td>

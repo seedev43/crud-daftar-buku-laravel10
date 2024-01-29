@@ -37,7 +37,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-2">
-                                        <img src="{{ $book->cover }}" class="rounded me-2"
+                                        <img src="{{ asset('/storage/images/' . $book->cover) }}" class="rounded me-2"
                                             style="width: 150px; height: 220px; object-fit: center;" alt="zpedia">
 
                                     </div>

@@ -35,20 +35,17 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="post" action="{{ route('book.update', $bookData->slug) }}">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary" onclick="window.location.href='{{ route('index') }}'"><i
+                                            class="mdi mdi-arrow-left"> Back</i></button>
+                                </div>
+                                <form method="post" action="{{ route('book.update', $bookData->slug) }}"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group mb-2">
                                         <label for="cover">Cover</label>
-                                        <input type="text" name="cover" id="cover"
-                                            class="form-control @error('cover') is-invalid @enderror"
-                                            placeholder="Ex: https://cdnwpseller.gramedia.net/wp-content/uploads/2021/10/02003757/laskar-pelangi.jpg"
-                                            value="{{ old('cover', $bookData->cover) }}">
-                                        @error('cover')
-                                            <div class="invalid-feedback mb-3">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                        <input class="form-control" type="file" id="cover" name="cover">
                                     </div>
                                     <div class="form-group mb-2">
                                         <label for="title">Book Title</label>
@@ -135,12 +132,11 @@
                                         </select>
                                     </div>
 
-                                    <div class="mt-3">
+                                    <div class="mt-3 mb-4">
                                         <button type="submit" class="btn btn-primary waves-effect waves-light">Submit
                                             Data</button>
                                     </div>
                                 </form>
-
 
                             </div>
                         </div>

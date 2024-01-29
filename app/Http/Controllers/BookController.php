@@ -9,6 +9,7 @@ use App\Models\PublicYear;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -59,12 +60,17 @@ class BookController extends Controller
             'category_id' => ['required', 'numeric'],
             'publisher_id' => ['required', 'numeric'],
             'publication_year_id' => ['required', 'numeric'],
-            'cover' => ['required', 'url'],
+            // 'cover' => ['required', 'url'],
+            'cover' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'title' => ['required', 'unique:list_books'],
             'description' => ['required', 'min:10']
         ]);
 
+        $image = $request->file('cover');
+        $image->storeAs('public/images', $image->hashName());
+
         if ($validatedData) {
+            $validatedData['cover'] = $image->hashName();
             $validatedData['slug'] = Str::slug($request->title, '-');
 
             Book::create($validatedData);
@@ -107,7 +113,7 @@ class BookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
+     * @param  string $slug
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $slug)
@@ -119,14 +125,23 @@ class BookController extends Controller
             'category_id' => ['required', 'numeric'],
             'publisher_id' => ['required', 'numeric'],
             'publication_year_id' => ['required', 'numeric'],
-            'cover' => ['required', 'url'],
+            // 'cover' => ['required', 'url'],
+            'cover' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'title' => ['required', Rule::unique('list_books', 'title')->ignore($book->id)],
             'description' => ['required', 'min:10']
         ]);
 
         if ($validatedData) {
-            $validatedData['slug'] = Str::slug($request->title, '-');
+            if($request->hasFile('cover')) {
+                $image = $request->file('cover');
+                $image->storeAs('public/images', $image->hashName());
 
+                Storage::delete('public/images/'.$book->cover);
+
+                $validatedData['cover'] = $image->hashName();
+            }
+            
+            $validatedData['slug'] = Str::slug($request->title, '-');
             $book->update($validatedData);
 
             return redirect('home')->with('msg', 'Book data has been successfully changed');

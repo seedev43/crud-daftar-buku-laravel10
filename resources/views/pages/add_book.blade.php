@@ -35,13 +35,16 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="post" action="{{ route('book.store') }}">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary" onclick="window.location.href='{{ route('index') }}'"><i
+                                            class="mdi mdi-arrow-left"> Back</i></button>
+                                </div>
+                                <form method="post" action="{{ route('book.store') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group mb-2">
                                         <label for="cover">Cover</label>
-                                        <input type="text" name="cover" id="cover"
-                                            class="form-control @error('cover') is-invalid @enderror"
-                                            placeholder="Ex: https://cdnwpseller.gramedia.net/wp-content/uploads/2021/10/02003757/laskar-pelangi.jpg">
+                                        <input class="form-control @error('cover') is-invalid @enderror" type="file"
+                                            id="cover" name="cover">
                                         @error('cover')
                                             <div class="invalid-feedback mb-3">
                                                 {{ $message }}
@@ -74,7 +77,8 @@
                                         <select type="select" name="category_id" id="category_id" class="form-select">
                                             <option value="">Select Category...</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}">{{ $category->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -83,7 +87,8 @@
                                         <select type="select" name="author_id" id="author_id" class="form-select">
                                             <option value="">Select Author...</option>
                                             @foreach ($authors as $author)
-                                                <option value="{{ $author->id }}">{{ $author->name }}</option>
+                                                <option value="{{ $author->id }}">{{ $author->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -92,7 +97,8 @@
                                         <select type="select" name="publisher_id" id="publisher_id" class="form-select">
                                             <option value="">Select Publisher...</option>
                                             @foreach ($publishers as $publisher)
-                                                <option value="{{ $publisher->id }}">{{ $publisher->name }}</option>
+                                                <option value="{{ $publisher->id }}">{{ $publisher->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -102,18 +108,18 @@
                                             class="form-select">
                                             <option value="">Select Publication Year...</option>
                                             @foreach ($publication_years as $publication_year)
-                                                <option value="{{ $publication_year->id }}">{{ $publication_year->year }}
+                                                <option value="{{ $publication_year->id }}">
+                                                    {{ $publication_year->year }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
 
-                                    <div class="mt-3">
+                                    <div class="mt-3 mb-4">
                                         <button type="submit" class="btn btn-primary waves-effect waves-light">Submit
                                             Data</button>
                                     </div>
                                 </form>
-
 
                             </div>
                         </div>
